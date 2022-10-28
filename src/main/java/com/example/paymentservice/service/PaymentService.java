@@ -1,4 +1,8 @@
 package com.example.paymentservice.service;
 
-public class PaymentService {
+import com.example.paymentservice.entity.Payment;
+
+public interface PaymentService {
+    Payment doPay (Payment payment);
+    String paymentStatus();
 }

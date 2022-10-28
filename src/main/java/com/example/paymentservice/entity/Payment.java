@@ -12,9 +12,9 @@ public class Payment {
     @GeneratedValue
     private int paymentId;
     private String paymentStatus;
-    private String transacsionId;
+    private String transactionId;
     private int orderId;
-    private double totalAmount;
+    private double amount;
 
     public int getOrderId() {
         return orderId;
@@ -25,11 +25,11 @@ public class Payment {
     }
 
     public double getAmount() {
-        return totalAmount;
+        return amount;
     }
 
-    public void setAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public String getPaymentStatus() {
@@ -40,11 +40,11 @@ public class Payment {
         this.paymentStatus = paymentStatus;
     }
 
-    public String getTransacsionId() {
-        return transacsionId;
+    public String getTransactionId() {
+        return transactionId;
     }
 
-    public void setTransacsionId(String txId) {
-        this.transacsionId = transacsionId;
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 }

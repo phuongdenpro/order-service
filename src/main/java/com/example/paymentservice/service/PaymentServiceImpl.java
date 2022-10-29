@@ -14,11 +14,13 @@ import java.util.UUID;
 
 @Service
 public class PaymentServiceImpl implements PaymentService{
-    static final String ORDER_BASE_URL = "http://localhost:3001/api/order";
-    static final String PRODUCT_BASE_URL = "http://localhost:3000/api/product";
+
     static final String USER_BASE_URL = "http://localhost:8000/api/user";
+    static final String PRODUCT_BASE_URL = "http://localhost:3000/api/product";
+    static final String ORDER_BASE_URL = "http://localhost:3001/api/order";
 
     private static final Gson gson = new Gson();
+
     private final RestTemplate restTemplate = new RestTemplate();
     @Autowired
     private PaymentRepository paymentRepository;

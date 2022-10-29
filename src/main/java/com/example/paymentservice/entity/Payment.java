@@ -1,5 +1,8 @@
 package com.example.paymentservice.entity;
 
+import com.sun.istack.NotNull;
+import lombok.NonNull;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -8,6 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tbl_payment")
 public class Payment {
+
     @Id
     @GeneratedValue
     private int paymentId;
@@ -15,6 +19,11 @@ public class Payment {
     private String transactionId;
     private int orderId;
     private double amount;
+    private String type;
+
+    public int getPaymentId() {
+        return paymentId;
+    }
 
     public int getOrderId() {
         return orderId;
@@ -46,5 +55,13 @@ public class Payment {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

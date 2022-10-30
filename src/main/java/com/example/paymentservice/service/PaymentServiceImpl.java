@@ -1,50 +1,65 @@
 package com.example.paymentservice.service;
 
-import com.example.paymentservice.entity.Payment;
-import com.example.paymentservice.repository.PaymentRepository;
-import com.google.gson.Gson;
+import com.example.paymentservice.entity.TransactionDetails;
+import com.example.paymentservice.model.PaymentMode;
+import com.example.paymentservice.model.PaymentRequest;
+import com.example.paymentservice.model.PaymentResponse;
+import com.example.paymentservice.repository.TransactionDetailsRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
 @Service
+@Log4j2
 public class PaymentServiceImpl implements PaymentService{
 
-    static final String USER_BASE_URL = "http://localhost:8000/api/user";
-    static final String PRODUCT_BASE_URL = "http://localhost:3000/api/product";
-    static final String ORDER_BASE_URL = "http://localhost:3001/api/order";
-
-    private static final Gson gson = new Gson();
-
-    private final RestTemplate restTemplate = new RestTemplate();
     @Autowired
-    private PaymentRepository paymentRepository;
+    private TransactionDetailsRepository transactionDetailsRepository;
+
     @Override
-    public Payment doPay(Payment payment) {
-        payment.setPaymentStatus(paymentStatus());
-        payment.setTransactionId(UUID.randomUUID().toString());
-        return paymentRepository.save(payment);
+    public int doPayment(PaymentRequest paymentRequest) {
+        log.info("Recording Payment Details: {}", paymentRequest);
+        TransactionDetails transactionDetails
+                = TransactionDetails.builder()
+                .paymentDate(Instant.now())
+                .paymentMode(paymentRequest.getPaymentMode().name())
+                .paymentStatus("SUCCESS")
+                .orderId(paymentRequest.getOrderId())
+                .referenceNumber(paymentRequest.getReferenceNumber())
+                .amount(paymentRequest.getAmount())
+                .build();
+
+        transactionDetailsRepository.save(transactionDetails);
+
+        log.info("Transaction Completed with Id: {}", transactionDetails.getId());
+
+        return transactionDetails.getId();
     }
 
     @Override
-    public String paymentStatus() {
-        return new Random().nextBoolean()?"success":"failure";
-    }
+    public PaymentResponse getPaymentDetailsByOrderId(String orderId) {
+        log.info("Getting payment details for the Order Id: {}", orderId);
 
-    @Override
-    public List<Payment> getListPayment() {
-        return paymentRepository.findAll();
-    }
+        TransactionDetails transactionDetails
+                = transactionDetailsRepository.findByOrderId(Integer.valueOf(orderId));
 
-    @Override
-    public  String getStatusByPaymentId(int paymentId){
-        Optional<Payment> payment = paymentRepository.findById(paymentId);
-        return payment.isEmpty() ? "No find payment!" : payment.get().getPaymentStatus();
-    }
+        PaymentResponse paymentResponse
+                = PaymentResponse.builder()
+                .paymentId(transactionDetails.getId())
+                .paymentMode(PaymentMode.valueOf(transactionDetails.getPaymentMode()))
+                .paymentDate(transactionDetails.getPaymentDate())
+                .orderId(transactionDetails.getOrderId())
+                .status(transactionDetails.getPaymentStatus())
+                .amount(transactionDetails.getAmount())
+                .build();
 
+        return paymentResponse;
+    }
 }

@@ -1,8 +1,12 @@
 package com.example.paymentservice.controller;
 
-import com.example.paymentservice.entity.Payment;
+import com.example.paymentservice.entity.TransactionDetails;
+import com.example.paymentservice.model.PaymentRequest;
+import com.example.paymentservice.model.PaymentResponse;
 import com.example.paymentservice.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,17 +16,22 @@ import java.util.List;
 public class PaymentController {
 
     @Autowired
-    public PaymentService paymentService;
+    private PaymentService paymentService;
+
     @PostMapping("/doPay")
-    public Payment doPayment(@RequestBody Payment payment){
-        return paymentService.doPay(payment);
+    public ResponseEntity<Integer> doPayment(@RequestBody PaymentRequest paymentRequest) {
+        return new ResponseEntity<>(
+                paymentService.doPayment(paymentRequest),
+                HttpStatus.OK
+        );
     }
-    @GetMapping("/list")
-    public List<Payment> getListPayment(){
-        return paymentService.getListPayment();
+
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<PaymentResponse> getPaymentDetailsByOrderId(@PathVariable String orderId) {
+        return new ResponseEntity<>(
+                paymentService.getPaymentDetailsByOrderId(orderId),
+                HttpStatus.OK
+        );
     }
-    @GetMapping("/{paymentId}/status")
-    public String getStatusByPaymentId (@PathVariable int paymentId){
-        return paymentService.getStatusByPaymentId(paymentId);
-    }
+
 }

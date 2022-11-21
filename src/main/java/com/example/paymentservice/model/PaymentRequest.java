@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PaymentRequest {
 
-    private int orderId;
+    private long covenantId;
     private long amount;
     private String referenceNumber;
     private PaymentMode paymentMode;

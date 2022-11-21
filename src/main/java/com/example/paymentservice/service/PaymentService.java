@@ -7,7 +7,7 @@ import com.example.paymentservice.model.PaymentResponse;
 import java.util.List;
 
 public interface PaymentService {
-    int doPayment(PaymentRequest paymentRequest);
+    Long doPayment(PaymentRequest paymentRequest);
 
-    PaymentResponse getPaymentDetailsByOrderId(String orderId);
+    PaymentResponse getPaymentDetailsByCovenantId(String orderId);
 }

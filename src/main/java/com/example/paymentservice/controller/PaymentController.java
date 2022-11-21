@@ -19,17 +19,17 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping("/doPay")
-    public ResponseEntity<Integer> doPayment(@RequestBody PaymentRequest paymentRequest) {
+    public ResponseEntity<Long> doPayment(@RequestBody PaymentRequest paymentRequest) {
         return new ResponseEntity<>(
                 paymentService.doPayment(paymentRequest),
                 HttpStatus.OK
         );
     }
 
-    @GetMapping("/order/{orderId}")
-    public ResponseEntity<PaymentResponse> getPaymentDetailsByOrderId(@PathVariable String orderId) {
+    @GetMapping("/covenant/{covenantId}")
+    public ResponseEntity<PaymentResponse> getPaymentDetailsByOrderId(@PathVariable String covenantId) {
         return new ResponseEntity<>(
-                paymentService.getPaymentDetailsByOrderId(orderId),
+                paymentService.getPaymentDetailsByCovenantId(covenantId),
                 HttpStatus.OK
         );
     }

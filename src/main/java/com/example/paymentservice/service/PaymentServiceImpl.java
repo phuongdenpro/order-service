@@ -24,14 +24,14 @@ public class PaymentServiceImpl implements PaymentService{
     private TransactionDetailsRepository transactionDetailsRepository;
 
     @Override
-    public int doPayment(PaymentRequest paymentRequest) {
+    public Long doPayment(PaymentRequest paymentRequest) {
         log.info("Recording Payment Details: {}", paymentRequest);
         TransactionDetails transactionDetails
                 = TransactionDetails.builder()
                 .paymentDate(Instant.now())
                 .paymentMode(paymentRequest.getPaymentMode().name())
                 .paymentStatus("SUCCESS")
-                .orderId(paymentRequest.getOrderId())
+                .covenantId(paymentRequest.getCovenantId())
                 .referenceNumber(paymentRequest.getReferenceNumber())
                 .amount(paymentRequest.getAmount())
                 .build();
@@ -44,18 +44,18 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public PaymentResponse getPaymentDetailsByOrderId(String orderId) {
-        log.info("Getting payment details for the Order Id: {}", orderId);
+    public PaymentResponse getPaymentDetailsByCovenantId(String covenantId) {
+        log.info("Getting payment details for the Order Id: {}", covenantId);
 
         TransactionDetails transactionDetails
-                = transactionDetailsRepository.findByOrderId(Integer.valueOf(orderId));
+                = transactionDetailsRepository.findByCovenantId(Long.valueOf(covenantId));
 
         PaymentResponse paymentResponse
                 = PaymentResponse.builder()
                 .paymentId(transactionDetails.getId())
                 .paymentMode(PaymentMode.valueOf(transactionDetails.getPaymentMode()))
                 .paymentDate(transactionDetails.getPaymentDate())
-                .orderId(transactionDetails.getOrderId())
+                .covenantId(transactionDetails.getCovenantId())
                 .status(transactionDetails.getPaymentStatus())
                 .amount(transactionDetails.getAmount())
                 .build();

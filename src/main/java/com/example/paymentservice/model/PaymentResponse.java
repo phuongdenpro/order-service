@@ -15,7 +15,7 @@ public class PaymentResponse {
 
     private Long paymentId;
     private String status;
-    private PaymentMode paymentMode;
+//    private PaymentMode paymentMode;
     private Long amount;
     private Instant paymentDate;
     private Long covenantId;

@@ -29,10 +29,10 @@ public class PaymentServiceImpl implements PaymentService{
         TransactionDetails transactionDetails
                 = TransactionDetails.builder()
                 .paymentDate(Instant.now())
-                .paymentMode(paymentRequest.getPaymentMode().name())
+//                .paymentMode(paymentRequest.getPaymentMode().name())
                 .paymentStatus("SUCCESS")
                 .covenantId(paymentRequest.getCovenantId())
-                .referenceNumber(paymentRequest.getReferenceNumber())
+//                .referenceNumber(paymentRequest.getReferenceNumber())
                 .amount(paymentRequest.getAmount())
                 .build();
 
@@ -53,7 +53,7 @@ public class PaymentServiceImpl implements PaymentService{
         PaymentResponse paymentResponse
                 = PaymentResponse.builder()
                 .paymentId(transactionDetails.getId())
-                .paymentMode(PaymentMode.valueOf(transactionDetails.getPaymentMode()))
+//                .paymentMode(PaymentMode.valueOf(transactionDetails.getPaymentMode()))
                 .paymentDate(transactionDetails.getPaymentDate())
                 .covenantId(transactionDetails.getCovenantId())
                 .status(transactionDetails.getPaymentStatus())

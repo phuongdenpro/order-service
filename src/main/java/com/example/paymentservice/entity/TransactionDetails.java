@@ -23,11 +23,11 @@ public class TransactionDetails {
     @Column(name = "COVENANT_ID")
     private Long covenantId;
 
-    @Column(name = "MODE")
-    private String paymentMode;
+//    @Column(name = "MODE")
+//    private String paymentMode;
 
-    @Column(name = "REFERENCE_NUMBER")
-    private String referenceNumber;
+//    @Column(name = "REFERENCE_NUMBER")
+//    private String referenceNumber;
 
     @Column(name = "PAYMENT_DATE")
     private Instant paymentDate;

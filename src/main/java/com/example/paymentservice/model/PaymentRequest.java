@@ -13,8 +13,8 @@ public class PaymentRequest {
 
     private long covenantId;
     private long amount;
-    private String referenceNumber;
-    private PaymentMode paymentMode;
+//    private String referenceNumber;
+//    private PaymentMode paymentMode;
 
 
 }

@@ -38,9 +38,9 @@ public class PaymentServiceImpl implements PaymentService{
 
         transactionDetailsRepository.save(transactionDetails);
 
-        log.info("Transaction Completed with Id: {}", transactionDetails.getId());
+        log.info("Transaction Completed with Id: {}", transactionDetails.getPaymentId());
 
-        return transactionDetails.getId();
+        return transactionDetails.getPaymentId();
     }
 
     @Override
@@ -52,11 +52,11 @@ public class PaymentServiceImpl implements PaymentService{
 
         PaymentResponse paymentResponse
                 = PaymentResponse.builder()
-                .paymentId(transactionDetails.getId())
+                .paymentId(transactionDetails.getPaymentId())
 //                .paymentMode(PaymentMode.valueOf(transactionDetails.getPaymentMode()))
                 .paymentDate(transactionDetails.getPaymentDate())
                 .covenantId(transactionDetails.getCovenantId())
-                .status(transactionDetails.getPaymentStatus())
+                .paymentStatus(transactionDetails.getPaymentStatus())
                 .amount(transactionDetails.getAmount())
                 .build();
 

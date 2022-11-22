@@ -36,8 +36,6 @@
 //        String token = null;
 //        User user = null;
 //
-//
-//
 //        if (null != authorization && authorization.startsWith("Bearer ")) {
 //            token = authorization.substring(7);
 //            OkHttpClient client = new OkHttpClient();

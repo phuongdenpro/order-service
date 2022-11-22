@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PaymentRequest {
 
-    private long covenantId;
-    private long amount;
-//    private String referenceNumber;
-//    private PaymentMode paymentMode;
+//    private long covenantId;
+//    private long amount;
+    private String referenceNumber;
+    private PaymentMode paymentMode;
 
 
 }

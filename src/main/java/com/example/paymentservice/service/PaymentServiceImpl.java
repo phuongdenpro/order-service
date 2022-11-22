@@ -5,35 +5,51 @@ import com.example.paymentservice.model.PaymentMode;
 import com.example.paymentservice.model.PaymentRequest;
 import com.example.paymentservice.model.PaymentResponse;
 import com.example.paymentservice.repository.TransactionDetailsRepository;
+import com.example.paymentservice.template.Covenant;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.google.gson.Gson;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Log4j2
-public class PaymentServiceImpl implements PaymentService{
+public class PaymentServiceImpl implements PaymentService {
+
+    @Autowired
+    private RestTemplate restTemplate;
+    private static final String BASE_URL
+            = "http://localhost:9999/api/covenant/byId";
+    private static Gson gson = new Gson();
 
     @Autowired
     private TransactionDetailsRepository transactionDetailsRepository;
+    int count = 1;
 
     @Override
-    public Long doPayment(PaymentRequest paymentRequest) {
+    public Long doPayment(PaymentRequest paymentRequest, String covenantId) {
+        System.out.println("Retry method called " + count++ + " times at " + new Date());
+        Object response = restTemplate.getForEntity(BASE_URL + "/" + covenantId, Object.class).getBody();
+        Covenant covenant = gson.fromJson(gson.toJson(response), Covenant.class);
         log.info("Recording Payment Details: {}", paymentRequest);
         TransactionDetails transactionDetails
                 = TransactionDetails.builder()
                 .paymentDate(Instant.now())
-//                .paymentMode(paymentRequest.getPaymentMode().name())
+                .paymentMode(paymentRequest.getPaymentMode().name())
                 .paymentStatus("SUCCESS")
-                .covenantId(paymentRequest.getCovenantId())
-//                .referenceNumber(paymentRequest.getReferenceNumber())
-                .amount(paymentRequest.getAmount())
+                .covenantId(covenant.getCovenantId())
+                .referenceNumber(paymentRequest.getReferenceNumber())
+                .amount(covenant.getCost())
                 .build();
 
         transactionDetailsRepository.save(transactionDetails);
@@ -53,7 +69,7 @@ public class PaymentServiceImpl implements PaymentService{
         PaymentResponse paymentResponse
                 = PaymentResponse.builder()
                 .paymentId(transactionDetails.getPaymentId())
-//                .paymentMode(PaymentMode.valueOf(transactionDetails.getPaymentMode()))
+                .paymentMode(PaymentMode.valueOf(transactionDetails.getPaymentMode()))
                 .paymentDate(transactionDetails.getPaymentDate())
                 .covenantId(transactionDetails.getCovenantId())
                 .paymentStatus(transactionDetails.getPaymentStatus())
@@ -62,4 +78,5 @@ public class PaymentServiceImpl implements PaymentService{
 
         return paymentResponse;
     }
+
 }

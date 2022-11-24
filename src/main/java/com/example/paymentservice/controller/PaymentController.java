@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 
 @RestController
 @RequestMapping("/api/payment")
@@ -30,6 +31,9 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
     private static final String PAYMENT_SERVICE = "paymentService";
+
+    @Value("service.user.url")
+    private String userServiceURL;
 
     private static Gson gson = new Gson();
 

@@ -19,4 +19,16 @@ public class PaymentResponse {
     private Long amount;
     private Instant paymentDate;
     private Long covenantId;
+
+    @Override
+    public String toString() {
+        return "PaymentResponse{" +
+                "paymentId=" + paymentId +
+                ", paymentStatus='" + paymentStatus + '\'' +
+                ", paymentMode=" + paymentMode +
+                ", amount=" + amount +
+                ", paymentDate=" + paymentDate +
+                ", covenantId=" + covenantId +
+                '}';
+    }
 }

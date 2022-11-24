@@ -41,6 +41,9 @@ public class PaymentServiceImpl implements PaymentService {
         System.out.println("Retry method called " + count++ + " times at " + new Date());
         Object response = restTemplate.getForEntity(BASE_URL + "/" + covenantId, Object.class).getBody();
         Covenant covenant = gson.fromJson(gson.toJson(response), Covenant.class);
+        if (covenant == null) {
+            return null;
+        }
         log.info("Recording Payment Details: {}", paymentRequest);
         TransactionDetails transactionDetails
                 = TransactionDetails.builder()
@@ -61,10 +64,14 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentResponse getPaymentDetailsByCovenantId(String covenantId) {
+        System.out.println("Retry method called " + count++ + " times at " + new Date());
         log.info("Getting payment details for the Order Id: {}", covenantId);
 
         TransactionDetails transactionDetails
                 = transactionDetailsRepository.findByCovenantId(Long.valueOf(covenantId));
+        if (transactionDetails == null) {
+            return null;
+        }
 
         PaymentResponse paymentResponse
                 = PaymentResponse.builder()
@@ -75,6 +82,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .paymentStatus(transactionDetails.getPaymentStatus())
                 .amount(transactionDetails.getAmount())
                 .build();
+
 
         return paymentResponse;
     }

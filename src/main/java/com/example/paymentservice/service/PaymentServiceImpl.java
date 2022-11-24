@@ -31,7 +31,7 @@ public class PaymentServiceImpl implements PaymentService {
     private RestTemplate restTemplate;
 
     
-    @Value("service.contract.url")
+    @Value("${service.contract.url}")
     private String contractServiceURL;
 
     // private static final String BASE_URL

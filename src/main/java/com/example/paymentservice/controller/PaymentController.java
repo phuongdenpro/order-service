@@ -32,7 +32,7 @@ public class PaymentController {
     private PaymentService paymentService;
     private static final String PAYMENT_SERVICE = "paymentService";
 
-    @Value("service.user.url")
+    @Value("${service.user.url}")
     private String userServiceURL;
 
     private static Gson gson = new Gson();
@@ -80,11 +80,13 @@ public class PaymentController {
             OkHttpClient client = new OkHttpClient();
             MediaType mediaType = MediaType.parse("text/plain");
             com.squareup.okhttp.RequestBody body = com.squareup.okhttp.RequestBody.create(mediaType, "");
+            System.out.println(userServiceURL+"/api/user/info/");
             Request request = new Request.Builder()
                     .url(userServiceURL+"/api/user/info/")
                     .get()
                     .addHeader("Authorization", "Bearer " + token)
                     .build();
+
             Response response = client.newCall(request).execute();
             if (response.code() == 200) {
                 PaymentResponse paymentResponse = paymentService.getPaymentDetailsByCovenantId(covenantId);

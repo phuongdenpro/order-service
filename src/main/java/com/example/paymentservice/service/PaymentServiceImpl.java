@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 @Log4j2
@@ -28,8 +29,13 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Autowired
     private RestTemplate restTemplate;
-    private static final String BASE_URL
-            = "http://localhost:9999/api/covenant/byId";
+
+    
+    @Value("service.contract.url")
+    private String contractServiceURL;
+
+    // private static final String BASE_URL
+    //         = "http://localhost:9999/api/covenant/byId";
     private static Gson gson = new Gson();
 
     @Autowired
@@ -39,7 +45,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Long doPayment(PaymentRequest paymentRequest, String covenantId) {
         System.out.println("Retry method called " + count++ + " times at " + new Date());
-        Object response = restTemplate.getForEntity(BASE_URL + "/" + covenantId, Object.class).getBody();
+        Object response = restTemplate.getForEntity(contractServiceURL + "/api/covenant/byId/" + covenantId, Object.class).getBody();
         Covenant covenant = gson.fromJson(gson.toJson(response), Covenant.class);
         if (covenant == null) {
             return null;

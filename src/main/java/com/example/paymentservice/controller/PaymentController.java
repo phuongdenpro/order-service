@@ -51,7 +51,7 @@ public class PaymentController {
             MediaType mediaType = MediaType.parse("text/plain");
             com.squareup.okhttp.RequestBody body = com.squareup.okhttp.RequestBody.create(mediaType, "");
             Request request = new Request.Builder()
-                    .url("http://127.0.0.1:8000/api/user/info/")
+                    .url(userServiceURL+"/api/user/info/")
                     .get()
                     .addHeader("Authorization", "Bearer " + token)
                     .build();
@@ -81,7 +81,7 @@ public class PaymentController {
             MediaType mediaType = MediaType.parse("text/plain");
             com.squareup.okhttp.RequestBody body = com.squareup.okhttp.RequestBody.create(mediaType, "");
             Request request = new Request.Builder()
-                    .url("http://127.0.0.1:8000/api/user/info/")
+                    .url(userServiceURL+"/api/user/info/")
                     .get()
                     .addHeader("Authorization", "Bearer " + token)
                     .build();
